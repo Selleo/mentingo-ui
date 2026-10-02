@@ -13,7 +13,6 @@ import { VOICE_SESSION_TEST_IDS } from "./test-ids";
 import type { ReactNode } from "react";
 
 export const VOICE_VISUALIZER_COLOR = "var(--primary)";
-/** Learner level above which the wave is shown even before the state switches to listening. */
 export const VOICE_ACTIVITY_THRESHOLD = 0.04;
 
 const MOBILE_CONTROL_CLASS_NAME =
@@ -29,7 +28,6 @@ export type VoiceSessionStateTitleProps = {
   className?: string;
 };
 
-/** Animated heading announcing the current conversation state. */
 export function VoiceSessionStateTitle({
   state,
   labels = DEFAULT_VOICE_SESSION_LABELS,
@@ -50,17 +48,13 @@ export function VoiceSessionStateTitle({
 
 export type VoiceSessionVisualizerProps = {
   state: VoiceModeState;
-  /** Learner microphone level 0..1. */
   voiceLevel: number;
-  /** Mentor playback level 0..1. */
   mentorVoiceLevel: number;
   isMicMuted?: boolean;
-  /** Any CSS color or `var(--token)`. Defaults to `var(--primary)`. */
   color?: string;
   className?: string;
 };
 
-/** Cross-fades between the learner wave (listening) and the mentor aura (thinking/speaking). */
 export function VoiceSessionVisualizer({
   state,
   voiceLevel,
@@ -131,7 +125,6 @@ export type VoiceSessionConnectionAlertProps = {
   className?: string;
 };
 
-/** Shown when the session could not recover from a connection failure. */
 export function VoiceSessionConnectionAlert({
   isRestarting = false,
   onRestart,
@@ -174,7 +167,6 @@ export type VoiceSessionTaskPanelProps = {
   labels?: Pick<VoiceSessionLabels, "task" | "close">;
 };
 
-/** Bottom sheet on mobile, side panel on desktop, holding the task/brief for the conversation. */
 export function VoiceSessionTaskPanel({
   open,
   onClose,
@@ -223,20 +215,16 @@ export type VoiceSessionControlsProps = {
   isMicMuted: boolean;
   onMicMutedChange: (muted: boolean) => void;
   onExit: () => void;
-  /** Render the "Check" button when provided. */
   onJudge?: () => void;
   canJudge?: boolean;
   isJudgePending?: boolean;
-  /** Render the task toggle when provided. */
   onTaskToggle?: () => void;
   isTaskPanelOpen?: boolean;
-  /** Disables mic and check while the connection is not healthy. */
   disabled?: boolean;
   labels?: VoiceSessionLabels;
   className?: string;
 };
 
-/** Desktop toolbar: task toggle, check, mute and exit. Hidden below `sm`. */
 export function VoiceSessionControls({
   isMicMuted,
   onMicMutedChange,
@@ -311,7 +299,6 @@ export function VoiceSessionControls({
   );
 }
 
-/** Icon-only floating controls shown below `sm`. Same props as {@link VoiceSessionControls}. */
 export function VoiceSessionMobileControls({
   isMicMuted,
   onMicMutedChange,

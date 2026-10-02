@@ -12,10 +12,6 @@ import type { MentorSpeechAlignment, MentorSpeechPresentation } from "../core/ty
 
 export type UseMentorSpeechOptions = MentorSpeechControllerOptions;
 
-/**
- * React lifecycle around {@link MentorSpeechController}: exposes the mentor playback level and the
- * word-highlight presentation as state. Feed it whatever your transport receives.
- */
 export function useMentorSpeech(options: UseMentorSpeechOptions = {}) {
   const optionsRef = useLatestRef(options);
   const controllerRef = useRef<MentorSpeechController | null>(null);

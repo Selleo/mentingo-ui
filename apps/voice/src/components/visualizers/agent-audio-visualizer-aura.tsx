@@ -1,17 +1,14 @@
 "use client";
 
 import { type VariantProps, cva } from "class-variance-authority";
-import { useMemo } from "react";
 
-import { colorToRgb } from "./agent-audio-visualizer-color";
+import { DEFAULT_VISUALIZER_COLOR, useVisualizerColor } from "./agent-audio-visualizer-color";
 import { ReactShaderToy } from "./react-shader-toy";
 import { useAgentAudioVisualizerAura } from "./use-agent-audio-visualizer-aura";
 import { cn } from "../../lib/utils";
 
 import type { AgentVisualizerState } from "./types";
 import type { ComponentProps } from "react";
-
-const DEFAULT_COLOR = "#1FD5F9";
 
 const shaderSource = `
 const float TAU = 6.283185;
@@ -221,7 +218,7 @@ interface AuraShaderProps {
 
   /**
    * Color of the aura. Supports hex colors and CSS variables.
-   * @default '#1FD5F9'
+   * @default 'var(--primary)'
    */
   color?: string;
 
@@ -257,7 +254,7 @@ function AuraShader({
   frequency = 0.5,
   scale = 0.2,
   blur = 1.0,
-  color = DEFAULT_COLOR,
+  color = DEFAULT_VISUALIZER_COLOR,
   colorShift = 1.0,
   brightness = 1.0,
   themeMode = typeof window !== "undefined" && document.documentElement.classList.contains("dark")
@@ -267,10 +264,10 @@ function AuraShader({
   className,
   ...props
 }: AuraShaderProps & ComponentProps<"div">) {
-  const rgbColor = useMemo(() => colorToRgb(color), [color]);
+  const { ref: colorRef, rgbColor } = useVisualizerColor(color, ref);
 
   return (
-    <div ref={ref} className={className} {...props}>
+    <div ref={colorRef} className={className} {...props}>
       <ReactShaderToy
         fs={shaderSource}
         devicePixelRatio={globalThis.devicePixelRatio ?? 1}
@@ -346,7 +343,7 @@ export interface AgentAudioVisualizerAuraProps {
   state?: AgentVisualizerState;
   /**
    * The color of the aura. Supports hex colors and CSS variables.
-   * @defaultValue '#1FD5F9'
+   * @defaultValue 'var(--primary)'
    */
   color?: string;
   /**
@@ -384,7 +381,7 @@ export interface AgentAudioVisualizerAuraProps {
 export function AgentAudioVisualizerAura({
   size = "lg",
   state = "connecting",
-  color = DEFAULT_COLOR,
+  color = DEFAULT_VISUALIZER_COLOR,
   colorShift = 0.05,
   volume,
   themeMode,

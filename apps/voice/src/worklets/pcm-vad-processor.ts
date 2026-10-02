@@ -1,8 +1,3 @@
-/**
- * Lightweight energy/zero-crossing speech gate running inside an AudioWorklet.
- * Resamples input to `targetSr`, emits PCM s16le chunks only while speech is detected (with pre-roll),
- * and posts a level on every chunk. An alternative to Silero VAD when ONNX/wasm is too heavy.
- */
 import {
   PCM_VAD_PROCESSOR_NAME,
   type PcmVadProcessorMessage,

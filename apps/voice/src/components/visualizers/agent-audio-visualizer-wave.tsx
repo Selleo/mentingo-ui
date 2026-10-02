@@ -3,7 +3,7 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { useMemo } from "react";
 
-import { colorToRgb } from "./agent-audio-visualizer-color";
+import { DEFAULT_VISUALIZER_COLOR, useVisualizerColor } from "./agent-audio-visualizer-color";
 import { ReactShaderToy } from "./react-shader-toy";
 import { useAgentAudioVisualizerWave } from "./use-agent-audio-visualizer-wave";
 import { cn } from "../../lib/utils";
@@ -108,7 +108,7 @@ interface WaveShaderProps {
 
 function WaveShader({
   speed = 10,
-  color = "#1FD5F9",
+  color = DEFAULT_VISUALIZER_COLOR,
   colorShift = 0.05,
   mix = 1.0,
   amplitude = 0.02,
@@ -119,10 +119,10 @@ function WaveShader({
   className,
   ...props
 }: WaveShaderProps & ComponentProps<"div">) {
-  const rgbColor = useMemo(() => colorToRgb(color), [color]);
+  const { ref: colorRef, rgbColor } = useVisualizerColor(color, ref);
 
   return (
-    <div ref={ref} className={className} {...props}>
+    <div ref={colorRef} className={className} {...props}>
       <ReactShaderToy
         fs={shaderSource}
         devicePixelRatio={globalThis.devicePixelRatio ?? 1}

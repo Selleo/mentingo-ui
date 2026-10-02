@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 
-/** Keeps the latest value in a ref so long-lived audio callbacks never call stale closures. */
 export function useLatestRef<T>(value: T) {
   const ref = useRef(value);
   useEffect(() => {

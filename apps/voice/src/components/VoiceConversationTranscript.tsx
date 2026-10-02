@@ -15,7 +15,6 @@ export const VOICE_TRANSCRIPT_ROLE = {
 export type VoiceTranscriptRole =
   (typeof VOICE_TRANSCRIPT_ROLE)[keyof typeof VOICE_TRANSCRIPT_ROLE];
 
-/** A committed conversation message. Map your chat history (e.g. AI SDK UIMessage) to this shape. */
 export type VoiceTranscriptMessage = {
   id: string;
   role: VoiceTranscriptRole;
@@ -23,17 +22,13 @@ export type VoiceTranscriptMessage = {
 };
 
 export type VoiceConversationTranscriptProps = {
-  /** Live learner transcript; partial revisions render dimmed until final. */
   learnerTranscript: LearnerTranscriptRevision | null;
-  /** Streaming mentor response text for the current turn. */
   mentorResponse: string;
-  /** Word timings for karaoke-style highlighting of `mentorResponse`. */
   mentorSpeech: MentorSpeechPresentation | null;
   mentorName: string;
   mentorAvatarUrl?: string | null;
   learnerName: string;
   learnerAvatarUrl?: string | null;
-  /** History to render; when omitted only the live turn is shown. The last 12 are displayed. */
   messages?: VoiceTranscriptMessage[];
   className?: string;
 };
@@ -168,7 +163,6 @@ function TranscriptMessages({
   );
 }
 
-/** Auto-following, scrollable transcript of the voice conversation with live learner/mentor turns. */
 export function VoiceConversationTranscript(props: VoiceConversationTranscriptProps) {
   const { messages, mentorResponse, learnerTranscript, className } = props;
   const viewportRef = useRef<HTMLDivElement>(null);

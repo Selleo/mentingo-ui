@@ -71,7 +71,6 @@ export function calculateRms(audio: ArrayLike<number>): number {
   return Math.sqrt(sum / audio.length);
 }
 
-/** Maps a float frame to a perceptual 0..1 microphone level with a noise floor. */
 export function calculateAudioLevel(audio: Float32Array): number {
   const rms = calculateRms(audio);
   const signal = Math.max(0, rms - AUDIO_LEVEL_NOISE_FLOOR);

@@ -30,7 +30,6 @@ export function voiceModeUIReducer(state: VoiceModeState, event: VoiceModeUIEven
   }
 }
 
-/** Derives the idle/listening/thinking/speaking state shown in the UI from session events. */
 export function useVoiceModeState() {
   const [voiceModeState, dispatch] = useReducer(voiceModeUIReducer, VOICE_MODE_STATE.IDLE);
 

@@ -1,12 +1,9 @@
-// Framework-agnostic engine (also available without React via "@mentingo/voice/core").
 export * from "./core";
 
-// React hooks
 export * from "./react/use-voice-capture";
 export * from "./react/use-mentor-speech";
 export * from "./react/use-voice-mode-state";
 
-// Session building blocks
 export * from "./components/session/VoiceMentorModeOverlay";
 export * from "./components/session/VoiceSessionBlocks";
 export * from "./components/session/labels";
@@ -16,13 +13,15 @@ export * from "./components/VoiceLevelBars";
 export * from "./components/VoiceAvatar";
 export * from "./components/MentorMark";
 
-// Visualizers
 export * from "./components/visualizers/agent-audio-visualizer-aura";
 export * from "./components/visualizers/agent-audio-visualizer-wave";
 export * from "./components/visualizers/react-shader-toy";
 export * from "./components/visualizers/types";
-export { colorToRgb } from "./components/visualizers/agent-audio-visualizer-color";
+export {
+  colorToRgb,
+  DEFAULT_VISUALIZER_COLOR,
+  useVisualizerColor,
+} from "./components/visualizers/agent-audio-visualizer-color";
 
-// Primitives
 export { Button, buttonVariants, type ButtonProps } from "./components/ui/button";
 export { cn } from "./lib/utils";

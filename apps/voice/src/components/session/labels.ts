@@ -1,6 +1,5 @@
 import { VOICE_MODE_STATE, type VoiceModeState } from "../../core/constants";
 
-/** All user-facing copy of the session blocks. Pass translated strings to localize. */
 export type VoiceSessionLabels = {
   states: Record<VoiceModeState, string>;
   task: string;

@@ -10,10 +10,6 @@ import { useLatestRef } from "./use-latest-ref";
 
 export type UseVoiceCaptureOptions = VoiceCaptureOptions;
 
-/**
- * React lifecycle around {@link VoiceCapture}. Construction options (sample rate, VAD, asset paths)
- * are read once; callbacks always see the latest props. The microphone is released on unmount.
- */
 export function useVoiceCapture(options: UseVoiceCaptureOptions = {}) {
   const optionsRef = useLatestRef(options);
   const captureRef = useRef<VoiceCapture | null>(null);

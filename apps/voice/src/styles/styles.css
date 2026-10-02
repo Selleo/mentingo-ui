@@ -1,8 +1,3 @@
-/*
- * Non-utility styles used by @mentingo/voice components.
- * Tailwind utilities come from your own Tailwind build (see README: content + preset).
- */
-
 @keyframes transcript-finalized-text {
   0% {
     color: transparent;

@@ -8,10 +8,6 @@ const scale = (name: string) =>
     ]),
   );
 
-/**
- * Maps the color utilities used by @mentingo/voice (primary-*, neutral-*, contrast, accent, …) to
- * CSS variables. Add it to `presets` and include the package dist in `content`.
- */
 const voicePreset = {
   content: [],
   theme: {

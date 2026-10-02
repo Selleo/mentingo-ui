@@ -30,9 +30,7 @@ export type SileroVadOptions = {
   minSpeechMs: number;
   redemptionMs: number;
   preSpeechPadMs: number;
-  /** Used instead of `negativeSpeechThreshold` when the learner turn is kept open (voice mentor). */
   keepTurnOpenNegativeSpeechThreshold: number;
-  /** Used instead of `redemptionMs` when the learner turn is kept open (voice mentor). */
   keepTurnOpenRedemptionMs: number;
 };
 
@@ -54,21 +52,16 @@ export const DEFAULT_AUDIO_CONSTRAINTS: MediaTrackConstraints = {
 };
 
 export type VoiceCaptureOptions = {
-  /** Output sample rate of emitted PCM chunks. Defaults to 16 kHz. */
   sampleRate?: number;
-  /** Duration of each emitted chunk. Defaults to 32 ms. */
   chunkMs?: number;
   vad?: Partial<SileroVadOptions>;
-  /** Where vad-web loads the Silero model and worklet from. Defaults to jsDelivr. */
   vadAssetBasePath?: string;
-  /** Where onnxruntime-web loads its wasm from. Defaults to jsDelivr. */
   onnxWasmBasePath?: string;
   audioConstraints?: MediaTrackConstraints;
   /** Mono PCM s16le chunk ready to send. In client VAD mode chunks are only produced during speech. */
   onChunk?: (chunk: ArrayBuffer, meta: PcmChunkMeta) => void;
   onSpeechStart?: (boundary: SpeechBoundary) => void;
   onSpeechEnd?: (boundary: SpeechBoundary) => void;
-  /** Microphone activity in 0..1 (speech probability in client VAD mode, RMS level otherwise). */
   onLevelChange?: (level: number) => void;
 };
 
@@ -79,14 +72,9 @@ export type VoiceCaptureStartOptions = {
    * flowing until `closeTurn()` is called (typically when a final transcript arrives).
    */
   keepTurnOpen?: boolean;
-  /** Sequence number of the first emitted chunk. Defaults to 1. */
   firstChunkSeq?: number;
 };
 
-/**
- * Microphone capture with Silero VAD (client endpointing) or continuous PCM (provider endpointing).
- * Transport-agnostic: chunks and speech boundaries are delivered via callbacks.
- */
 export class VoiceCapture {
   private readonly targetSr: number;
   private readonly chunkSamples: number;
@@ -139,7 +127,6 @@ export class VoiceCapture {
     return this.endpointingModeValue;
   }
 
-  /** Sequence of the last emitted chunk, or -1 if none was emitted in this session. */
   get lastChunkSeq() {
     return this.nextChunkSeq - 1 < this.firstSeqOfSession ? -1 : this.nextChunkSeq - 1;
   }
@@ -170,7 +157,6 @@ export class VoiceCapture {
     }
   }
 
-  /** Releases the microphone and discards any unsent audio. */
   async stop() {
     this.captureGeneration += 1;
     this.active = false;
@@ -183,7 +169,6 @@ export class VoiceCapture {
     await this.stopContinuousCapture();
   }
 
-  /** Ends a learner turn that was kept open with `keepTurnOpen`. */
   closeTurn() {
     if (!this.keepTurnOpen) {
       return;

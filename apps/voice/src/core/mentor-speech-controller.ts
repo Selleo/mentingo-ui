@@ -13,32 +13,22 @@ import { RealtimePCMPlayer } from "./pcm-player";
 import type { MentorSpeechAlignment, MentorSpeechPresentation } from "./types";
 
 export type MentorSpeechControllerOptions = {
-  /** Sample rate of incoming mentor PCM. Defaults to 44.1 kHz. */
   sampleRate?: number;
   channels?: number;
-  /** A turn without `completeTurn` is finalized after this much silence. Defaults to 5 s. */
   inactivityTimeoutMs?: number;
   onLevelChange?: (level: number) => void;
   onPresentationChange?: (presentation: MentorSpeechPresentation | null) => void;
-  /** First accepted chunk of a new mentor turn. */
   onTurnStarted?: (turnId: string) => void;
-  /** All audio of the turn has finished playing. */
   onTurnCompleted?: (turnId: string) => void;
-  /** Playback was cut, either by the server or by learner barge-in. */
   onInterrupted?: () => void;
 };
 
 export type MentorAudioChunk = {
   turnId: string;
   seq: number;
-  /** Raw PCM s16le bytes or a base64 string of them. */
   audio: ArrayBuffer | Uint8Array | string;
 };
 
-/**
- * Plays streamed mentor speech turn by turn: drops stale/out-of-order chunks, finalizes turns on
- * completion or inactivity, supports barge-in and tracks the currently spoken word.
- */
 export class MentorSpeechController {
   private readonly player: RealtimePCMPlayer;
   private readonly inactivityTimeoutMs: number;
@@ -96,7 +86,6 @@ export class MentorSpeechController {
     await this.player.start();
   }
 
-  /** Enqueues a mentor audio chunk. Returns false when the chunk was dropped. */
   async pushAudio({ turnId, seq, audio }: MentorAudioChunk): Promise<boolean> {
     if (typeof seq !== "number" || !turnId) {
       return false;
@@ -131,7 +120,6 @@ export class MentorSpeechController {
     return true;
   }
 
-  /** Word timings for the mentor turn; drives `activeWordIndex` during playback. */
   pushAlignment(incoming: MentorSpeechAlignment) {
     const alignment = acceptMentorSpeechAlignment(this.alignment, incoming);
     this.alignment = alignment;
@@ -142,13 +130,11 @@ export class MentorSpeechController {
     });
   }
 
-  /** The server finished sending audio for the turn; it finalizes once playback drains. */
   completeTurn(turnId?: string) {
     this.turnState = onVoiceMentorAudioCompleted(this.turnState, turnId);
     this.finalizeTurnIfReady();
   }
 
-  /** The server interrupted the turn. Ignored when it targets a different turn. */
   handleInterrupted(turnId?: string) {
     if (!shouldHandleVoiceMentorInterrupted(this.turnState, turnId)) {
       return;
@@ -157,7 +143,6 @@ export class MentorSpeechController {
     this.cutPlayback();
   }
 
-  /** Learner barge-in: stops current mentor speech if any. Returns true when something was cut. */
   interrupt(): boolean {
     if (!this.turnState.activeTurnId) {
       return false;
@@ -167,7 +152,6 @@ export class MentorSpeechController {
     return true;
   }
 
-  /** Silences playback and forgets turn and alignment state without notifying listeners. */
   reset() {
     this.player.reset();
     this.clearInactivityTimer();

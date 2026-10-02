@@ -38,9 +38,7 @@ export type PcmChunkMeta = {
   ts_ms: number;
 };
 
-/** Emitted when client VAD opens or closes a learner utterance. */
 export type SpeechBoundary = {
-  /** Monotonic boundary counter within one capture session, starting at 1. */
   boundarySeq: number;
   tsMs: number;
   /** Sequence of the last chunk handed to `onChunk` before this boundary, or -1 if none. */

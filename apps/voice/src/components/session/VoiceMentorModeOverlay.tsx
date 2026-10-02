@@ -39,9 +39,7 @@ export type VoiceMentorModeOverlayProps = {
   learnerName: string;
   learnerAvatarUrl?: string | null;
   messages?: VoiceTranscriptMessage[];
-  /** Task/brief content; the task panel and its toggles render only when provided. */
   taskContent?: ReactNode;
-  /** "Check" action; the button renders only when provided. */
   onJudge?: () => void;
   isJudgePending?: boolean;
   canJudge?: boolean;
@@ -52,12 +50,10 @@ export type VoiceMentorModeOverlayProps = {
   onRestart: () => void;
   onExit: () => void;
   labels?: VoiceSessionLabelsInput;
-  /** Any CSS color or `var(--token)` for the visualizers. */
   visualizerColor?: string;
   className?: string;
 };
 
-/** Full-screen voice mentor session assembled from the session building blocks. */
 export function VoiceMentorModeOverlay({
   open,
   state,
